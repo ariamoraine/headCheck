@@ -55,7 +55,8 @@ app.use('/api', apiRoutes)
 
 //routing for everything else
 app.get('*', (req, res, next) => {
-  res.sendFile(path.join(__dirname, 'index.html'))
+  console.log('dirname', __dirname)
+  res.sendFile(path.join(__dirname + '/public', 'index.html'))
 })
 
 //error handler

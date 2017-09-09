@@ -1,7 +1,12 @@
 $all-font: 1.5em;
 $main-color: purple;
 
-* {
-  font-size: $all-font;
-  text-shadow: 4px 3px $main-color;
+.title {
+  font-size: 2em;
+  text-shadow: 2px 1px $main-color;
+}
+
+.cat {
+  font-size: 1.5em;
+  font-weight: bold;
 }

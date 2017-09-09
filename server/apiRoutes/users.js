@@ -6,7 +6,8 @@ userRouter.get('/', (req, res, next) => {
 })
 
 userRouter.get('/me', (req, res, next) => {
-  res.send(req.user)
+  if (req.user) res.send(req.user)
+  else res.redirect('/api/users/login')
 })
 
 userRouter.post('/login', (req, res, next) => {
