@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import SubCat from './subCat'
 
 export default class Add extends Component {
 
@@ -6,10 +7,19 @@ export default class Add extends Component {
     super(props)
 
     this.state = {
+      'General Info': {
+        Date: '',
+        ID: '',
+        Team: '',
+        Number: '',
+        Position: '',
+        HPI: '',
+        'Assessment/Plan': '',
+      },
       Neck: {
        'Full ROM': false,
        'Tenderness of paraspinal muscles': false,
-       'Midline cervucak tenderness': false,
+       'Midline cervical tenderness': false,
        'notes': ''
       },
       MS: {
@@ -30,7 +40,7 @@ export default class Add extends Component {
         'Visual fields full': false,
         'Smooth Pursuit normal': false,
         'Succades normal': false,
-        'Convergence': false,
+        'Convergence': '',
         'VOR normal': false,
         'VOR suppression normal': false,
         'notes': ''
@@ -53,14 +63,23 @@ export default class Add extends Component {
        'Normal single leg, eyes closed, squat': false,
        'Normal tandem forward/backward': false,
        'notes': ""
+      },
+      Other: {
+        'notes': ""
       }
     }
 
     this.handleNote = this.handleNote.bind(this)
+    this.click = this.click.bind(this)
+    this.handleInfo = this.handleInfo.bind(this)
   }
 
-  handleNote (event, category) {
-    const newCategory = Object.assign(this.state[category], {notes: event.target.value})
+  handleInfo (event, category, subCategory) {
+    console.log("handleInfo", event.target.value, category, subCategory)
+  }
+
+  handleNote (event, category, subCategory) {
+    const newCategory = Object.assign(this.state[category], {[subCategory]: event.target.value})
 
     this.setState({
       [category]: newCategory
@@ -92,16 +111,14 @@ export default class Add extends Component {
             return (
               <div className="wrapper" key={idx}>
                 <div>{subCat}</div>
-                {
-                  subCat === 'notes' ?
-                    <div>
-                      <textarea onChange={(e) => this.handleNote(e, category)} className="textarea" type="textarea" placeholder={`${category} notes`} />
-                    </div>
-                  :
-                    <div className="switch">
-                    <div onClick={() => this.click(category, subCat)} className={`${this.state[category][subCat]}`}>{this.state[category][subCat] ? 'Yes' : 'No'}</div>
-                    </div>
-                }
+                <SubCat
+                  state={this.state}
+                  handleNote={this.handleNote}
+                  handleInfo={this.handleInfo}
+                  click={this.click}
+                  category={category}
+                  subCat={subCat}
+                />
               </div>
             )
           })
