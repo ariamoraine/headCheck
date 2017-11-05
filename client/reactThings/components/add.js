@@ -55,19 +55,26 @@ export default class Add extends Component {
        'notes': ""
       }
     }
+
+    this.handleNote = this.handleNote.bind(this)
   }
 
-  click (event, thing) {
-    // console.log('inside click', event, thing)
-    // console.log(this.state.formInfo)
-    // console.log("test", this.state[event])
-    let test = {
-      [thing]: !this.state[event][thing]
+  handleNote (event, category) {
+    const newCategory = Object.assign(this.state[category], {notes: event.target.value})
+
+    this.setState({
+      [category]: newCategory
+    })
+  }
+
+  click (category, subCategory) {
+    let newCategory = {
+      [subCategory]: !this.state[category][subCategory]
     }
 
-    let nextTest = Object.assign(this.state[event], test)
+    let newMasterCategory = Object.assign(this.state[category], newCategory)
     this.setState({
-      [event]: nextTest
+      [category]: newMasterCategory
     })
   }
 
@@ -77,24 +84,22 @@ export default class Add extends Component {
       <div>
 
       <div className='title'>Add page</div>
-      {Object.keys(this.state).map((element, idx) => {
-        // console.log(element)
+      {Object.keys(this.state).map((category, idx) => {
         return (
           <div key={idx}>
-          <span className='cat'>{element}</span>
-          {Object.keys(this.state[element]).map((subCat, idx) => {
-            return(
+          <span className='cat'>{category}</span>
+          {Object.keys(this.state[category]).map((subCat, idx) => {
+            return (
               <div className="wrapper" key={idx}>
                 <div>{subCat}</div>
                 {
                   subCat === 'notes' ?
-                    // <div>NOTE SECTION</div>
                     <div>
-                    <textarea className="textarea" type="textarea" placeholder={`${element} notes`}></textarea>
+                      <textarea onChange={(e) => this.handleNote(e, category)} className="textarea" type="textarea" placeholder={`${category} notes`} />
                     </div>
                   :
                     <div className="switch">
-                    <div onClick={() => this.click(element, subCat)} className={`${this.state[element][subCat]}`}>{this.state[element][subCat] ? 'Yes' : 'No'}</div>
+                    <div onClick={() => this.click(category, subCat)} className={`${this.state[category][subCat]}`}>{this.state[category][subCat] ? 'Yes' : 'No'}</div>
                     </div>
                 }
               </div>
