@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import SubCat from './subCat'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 export default class Add extends Component {
 
@@ -9,12 +11,13 @@ export default class Add extends Component {
     this.state = {
       'General Info': {
         Date: '',
-        ID: '',
+        'Patient ID': '',
         Team: '',
         Number: '',
         Position: '',
         HPI: '',
         'Assessment/Plan': '',
+        'Physician Name': '',
       },
       Neck: {
        'Full ROM': false,
@@ -72,6 +75,48 @@ export default class Add extends Component {
     this.handleNote = this.handleNote.bind(this)
     this.click = this.click.bind(this)
     this.handleInfo = this.handleInfo.bind(this)
+    this.submit = this.submit.bind(this)
+    this.makeExamObject = this.makeExamObject.bind(this)
+  }
+
+  sanitize (name) {
+    name = name.toLowerCase().split(' ').join('_').split('/').join('_').split(',').join('')
+    return name
+  }
+
+  makeExamObject () {
+    let examObject = {}
+    for (let category in this.state) {
+      for (let subCategory in this.state[category]) {
+        // console.log('subCategory', subCategory)
+        let name = subCategory
+        if (subCategory === 'notes') {
+          name = `${category} notes`
+        }
+        name = this.sanitize(name)
+        examObject[name] = this.state[category][subCategory]
+      }
+    }
+    console.log('exam Object', examObject)
+    return examObject
+  }
+
+  submit () {
+    const examObject = this.makeExamObject()
+    axios.post('/api/exam/', examObject)
+    .then(results => {
+      console.log('results', results)
+      if (results.status === 200) {
+        alert('the exam has been saved')
+        this.props.history.push('/view')
+      } else {
+        alert('There was an error while saving your exam. Please make sure you have all the needed fields')
+      }
+
+    })
+    .catch(e => {
+      console.log('error?', e)
+    })
   }
 
   handleInfo (event, category, subCategory) {
@@ -98,7 +143,6 @@ export default class Add extends Component {
   }
 
   render () {
-    console.log('state', this.state)
     return (
       <div>
 
@@ -127,6 +171,7 @@ export default class Add extends Component {
         )
       })
       }
+      <input className="button" type="submit" onClick={this.submit} />
       </div>
     )
   }

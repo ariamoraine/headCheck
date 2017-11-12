@@ -6,7 +6,6 @@ import ViewDetail from '../components/viewDetail'
 export default class View extends Component {
   constructor (props) {
     super(props)
-
   }
 
   render () {

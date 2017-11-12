@@ -8,10 +8,17 @@ export default function subCat (props) {
           <textarea onChange={(e) => props.handleNote(e, props.category, props.subCat)} className="textarea" type="textarea" placeholder={`${props.subCat}`} />
         </div>
       )
+    }
+    if (props.subCat === 'Date') {
+      return (
+        <div>
+          <input type="date" onChange={(e) => props.handleNote(e, props.category, props.subCat)} className="text" />
+        </div>
+      )
     } else {
       return (
         <div>
-          <input onChange={(e) => props.handleInfo(e, props.category, props.subCat)} type="text" className="text" />
+          <input onChange={(e) => props.handleNote(e, props.category, props.subCat)} type="text" className="text" />
         </div>
       )
     }
@@ -27,7 +34,7 @@ export default function subCat (props) {
         {
           props.subCat === 'Convergence' ?
           <div>
-            <input onChange={(e) => props.handleInfo(e, props.category, props.subCat)} type="text" className="text" />
+            <input onChange={(e) => props.handleNote(e, props.category, props.subCat)} type="text" className="text" />
             <span style={{fontSize: '2em'}}>cm</span>
           </div>
           :
